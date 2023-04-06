@@ -1,0 +1,129 @@
+def relationship_status(from_member, to_member, social_graph):
+    from_following = social_graph[from_member]["following"]
+    to_following = social_graph[to_member]["following"]
+    
+    if to_member in from_following and from_member in to_following:
+        return "friends"
+    elif to_member in from_following:
+        return "follower"
+    elif from_member in to_following:
+        return "followed by"
+    else:
+        return "no relationship"
+
+social_graph = {
+    "@bongolpoc":{"first_name":"Joselito",
+                  "last_name":"Olpoc",
+                  "following":[
+                  ]
+    },
+    "@joaquin":  {"first_name":"Joaquin",
+                  "last_name":"Gonzales",
+                  "following":[
+                      "@chums","@jobenilagan"
+                  ]
+    },
+    "@chums" : {"first_name":"Matthew",
+                "last_name":"Uy",
+                "following":[
+                    "@bongolpoc","@miketan","@rudyang","@joeilagan"
+                ]
+    },
+    "@jobenilagan":{"first_name":"Joben",
+                   "last_name":"Ilagan",
+                   "following":[
+                    "@eeebeee","@joeilagan","@chums","@joaquin"
+                   ]
+    },
+    "@joeilagan":{"first_name":"Joe",
+                  "last_name":"Ilagan",
+                  "following":[
+                    "@eeebeee","@jobenilagan","@chums"
+                  ]
+    },
+    "@eeebeee":  {"first_name":"Elizabeth",
+                  "last_name":"Ilagan",
+                  "following":[
+                    "@jobenilagan","@joeilagan"
+                  ]
+    },
+}
+
+print("Output of Relationship Status:")
+print("The relationship of @jobenilagan and @joaquin is: ",relationship_status("@jobenilagan", "@joaquin", social_graph))
+print("The relationship of @joaquin and @chums is: ",relationship_status("@joaquin", "@chums", social_graph))
+print("The relationship of @joaquin and @bongolpoc is: ",relationship_status("@joaquin", "@bongolpoc", social_graph))
+print("The relationship of @joaquin and @jobenilagan is: ",relationship_status("@joaquin", "@jobenilagan", social_graph))
+
+
+def tic_tac_toe(board):
+    # Check rows and columns
+    for i in range(len(board)):
+        if len(set(board[i])) == 1 and board[i][0] != '':
+            return board[i][0]
+        if len(set([board[j][i] for j in range(len(board))])) == 1 and board[0][i] != '':
+            return board[0][i]
+    
+    # Check diagonals
+    if len(set([board[i][i] for i in range(len(board))])) == 1 and board[0][0] != '':
+        return board[0][0]
+    if len(set([board[i][len(board)-1-i] for i in range(len(board))])) == 1 and board[0][len(board)-1] != '':
+        return board[0][len(board)-1]
+    
+    # No winner
+    return 'NO WINNER'
+
+
+board4 = [
+['X','X','X'],
+['O','X','O'],
+['O','','O'],
+]
+
+print("\nOutput of Tic-Tac-Toe:")
+print("[X] [X] [X]")
+print("[O] [X] [O]")
+print("[O] [ ] [O]")
+winner = tic_tac_toe(board4)
+print("Winner: ",winner)
+
+
+
+def eta(first_stop, second_stop, route_map):
+    total_travel_time = 0
+    current_stop = first_stop
+    
+    while current_stop != second_stop:
+        # Get the next leg in the route
+        next_leg = None
+        for stops, leg in route_map.items():
+            if stops[0] == current_stop:
+                next_leg = leg
+                total_travel_time += next_leg["travel_time_mins"]
+                current_stop = stops[1]
+                break
+        
+        if next_leg is None:
+            raise ValueError("Invalid route")
+        
+    return total_travel_time
+
+
+
+# Define the legs variable
+legs = {
+     ("upd","admu"):{
+         "travel_time_mins":10
+     },
+     ("admu","dlsu"):{
+         "travel_time_mins":35
+     },
+     ("dlsu","upd"):{
+         "travel_time_mins":55
+     }
+}
+
+print("\nOutput of eta:")
+print("Form upd to admu is",eta("upd", "admu", legs),"minutes travel time")
+print("Form admu to dlsu is",eta("admu", "dlsu", legs),"minutes travel time")
+print("Form dlsu to upd is",eta("dlsu", "upd", legs),"minutes travel time")
